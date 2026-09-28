@@ -1,0 +1,33 @@
+{
+  "title": "Fakta Gurita",
+  "scenes": [
+    {
+      "duration": 3,
+      "text": "PERNAH KEPIKIRAN?!",
+      "motion": "pop",
+      "visualQuery": "mysterious octopus underwater",
+      "assetType": "video"
+    },
+    {
+      "duration": 4,
+      "text": "GURITA PUNYA 3 JANTUNG",
+      "motion": "zoom_in",
+      "visualQuery": "real octopus underwater close up",
+      "assetType": "video"
+    },
+    {
+      "duration": 3,
+      "text": "SATU UNTUK SETIAP INSANG",
+      "motion": "slide_left",
+      "visualQuery": "octopus breathing underwater close up",
+      "assetType": "video"
+    },
+    {
+      "duration": 3,
+      "text": "LAH, TERNYATA?!",
+      "motion": "shake",
+      "visualQuery": "octopus underwater dramatic close up",
+      "assetType": "video"
+    }
+  ]
+}

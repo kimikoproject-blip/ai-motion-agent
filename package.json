@@ -1,0 +1,26 @@
+{
+  "name": "ai-motion-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimikoproject-blip/ai-motion-agent.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kimikoproject-blip/ai-motion-agent/issues"
+  },
+  "homepage": "https://github.com/kimikoproject-blip/ai-motion-agent#readme",
+  "dependencies": {
+    "@remotion/cli": "^4.0.529",
+    "dotenv": "^18.0.4",
+    "remotion": "^4.0.529"
+  }
+}
