@@ -1,106 +1,147 @@
-import { execFileSync } from "child_process";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
-const theme = process.argv.slice(2).join(" ").trim();
+const execFileAsync =
+  promisify(execFile);
+
+const theme =
+  process.argv
+    .slice(2)
+    .join(" ")
+    .trim();
 
 if (!theme) {
-  console.error("");
-  console.error("❌ Theme belum diberikan.");
-  console.error("");
-  console.error("Contoh:");
   console.error(
-    'node scripts/create-video.mjs "fakta unik tentang gurita"'
+    '❌ Masukkan tema.\n\nContoh:\nnode scripts/create-video.mjs "kenapa gurita punya tiga jantung"'
   );
-  console.error("");
+
   process.exit(1);
 }
 
-function run(label, command, args) {
+async function run(
+  command,
+  args
+) {
   console.log("");
-  console.log("========================================");
-  console.log(label);
-  console.log("========================================");
-  console.log("");
+  console.log(
+    "================================"
+  );
+  console.log(
+    `▶ ${command} ${args.join(" ")}`
+  );
+  console.log(
+    "================================"
+  );
 
-  execFileSync(command, args, {
-    stdio: "inherit",
-  });
+  await execFileAsync(
+    command,
+    args,
+    {
+      stdio: "inherit",
+    }
+  );
 }
 
 try {
-  // ========================================
-  // 1. AI GENERATE SCENES
-  // ========================================
-
-  run(
-    "1/4 🤖 GENERATE AI SCENES",
+  /*
+   * STEP 1
+   * AI STORY
+   */
+  await run(
     "node",
     [
-      "scripts/generate-scenes.mjs",
+      "scripts/generate-story.mjs",
       theme,
     ]
   );
 
-  // ========================================
-  // 2. RESOLVE B-ROLL
-  // ========================================
-
-  run(
-    "2/4 🎥 RESOLVE B-ROLL",
+  /*
+   * STEP 2
+   * TTS
+   */
+  await run(
     "node",
     [
-      "scripts/resolve-broll.mjs",
+      "scripts/generate-tts.mjs",
     ]
   );
 
-  // ========================================
-  // 3. NORMALIZE B-ROLL
-  // ========================================
-
-  run(
-    "3/4 📐 NORMALIZE B-ROLL",
+  /*
+   * STEP 3
+   * Sync timing
+   */
+  await run(
     "node",
     [
-      "scripts/normalize-broll.mjs",
+      "scripts/sync-text-beats.mjs",
     ]
   );
 
-  // ========================================
-  // 4. RENDER REMOTION
-  // ========================================
+  /*
+   * STEP 4
+   * Scene images
+   *
+   * Untuk sementara image provider
+   * boleh gagal karena quota.
+   */
+  try {
+    await run(
+      "node",
+      [
+        "scripts/generate-scenes.mjs",
+      ]
+    );
+  } catch (error) {
+    console.log("");
+    console.log(
+      "⚠️ IMAGE GENERATION DI-SKIP"
+    );
 
-  run(
-    "4/4 🎬 RENDER FINAL VIDEO",
-    "npx",
+    console.log(
+      "Provider image bisa diganti nanti."
+    );
+  }
+
+  /*
+   * STEP 5
+   * Render
+   */
+  await run(
+    "node",
     [
-      "remotion",
-      "render",
-      "remotion/src/index.jsx",
-      "MotionDemo",
-      "out/final.mp4",
-      "--concurrency=1",
-      "--timeout=120000",
-      "--codec=h264",
-      "--overwrite",
+      "scripts/generate-video.mjs",
     ]
   );
 
   console.log("");
-  console.log("========================================");
-  console.log("🎉 VIDEO GENERATION SELESAI");
-  console.log("========================================");
-  console.log("");
-  console.log(`🎯 Theme : ${theme}`);
-  console.log("🎬 Output: out/final.mp4");
-  console.log("");
-  console.log("========================================");
-  console.log("");
+  console.log(
+    "================================"
+  );
+  console.log(
+    "🎬 VIDEO SELESAI"
+  );
+  console.log(
+    "================================"
+  );
+
+  console.log(
+    "Output: out/final.mp4"
+  );
 } catch (error) {
   console.error("");
-  console.error("========================================");
-  console.error("❌ VIDEO GENERATION GAGAL");
-  console.error("========================================");
-  console.error("");
-  console.error(error.message);
-  console.error("");
+  console.error(
+    "================================"
+  );
+  console.error(
+    "❌ PIPELINE GAGAL"
+  );
+  console.error(
+    "================================"
+  );
+
+  console.error(
+    error.message
+  );
+
   process.exit(1);
 }

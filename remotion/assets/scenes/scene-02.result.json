@@ -1,0 +1,32 @@
+{
+  "scene_id": 2,
+  "narration": "Dua jantung membantu memompa darah ke insang,",
+  "visual_type": "SIMPLE_ANATOMY",
+  "visual": "Close-up internal anatomical view showing two side hearts rhythmically pulsing, pushing glowing blue blood streams directly into two adjacent feathery gill structures",
+  "subject": "two branchial hearts and two adjacent feathery gills",
+  "environment": "semi-transparent inner body view of octopus with clean minimalist ocean backdrop",
+  "focus": "the two side hearts and blood flowing directly into the gills",
+  "visual_relationship": "each side heart is connected directly to its own gill organ by vascular tubes",
+  "action": "two hearts pulsating synchronously and directing blue blood flow into the gills",
+  "emphasis": "two side hearts and feathery gills",
+  "motion": "focus",
+  "overlay_text": "2 JANTUNG → INSANG",
+  "image_hash": "e261c8a7fd",
+  "focus_bbox": {
+    "x": 0.32,
+    "y": 0.36,
+    "width": 0.35,
+    "height": 0.27
+  },
+  "focus_target": "two side hearts and blood flowing directly into the gills",
+  "vision_score": 5,
+  "vision_pass": true,
+  "vision_main_subject_correct": true,
+  "vision_relationship_clear": true,
+  "vision_focus_clear": true,
+  "vision_object_count_correct": true,
+  "vision_has_unwanted_text": false,
+  "vision_has_visual_errors": false,
+  "image_model": "cf/@cf/black-forest-labs/flux-2-dev",
+  "image_attempt": 1
+}

@@ -1,0 +1,32 @@
+{
+  "scene_id": 1,
+  "narration": "Pernah kepikiran kenapa gurita punya tiga jantung?",
+  "visual_type": "CHARACTER_FACT",
+  "visual": "Cute purple animated octopus floating underwater with wide curious eyes, semi-transparent body clearly revealing three distinct glowing red heart organs inside its mantle",
+  "subject": "cute purple octopus with three visible glowing hearts",
+  "environment": "vibrant cartoon underwater coral reef with floating bubbles and soft sunlight filtering through water",
+  "focus": "the three glowing red hearts inside the octopus mantle",
+  "visual_relationship": "three glowing hearts located inside the transparent torso of the single octopus",
+  "action": "octopus floating curiously while the three hearts glow gently",
+  "emphasis": "the three glowing hearts",
+  "motion": "zoom_in",
+  "overlay_text": "3 JANTUNG GURITA?",
+  "image_hash": "b9c2527daf",
+  "focus_bbox": {
+    "x": 0.31,
+    "y": 0.48,
+    "width": 0.37,
+    "height": 0.08
+  },
+  "focus_target": "the three glowing red hearts inside the octopus mantle",
+  "vision_score": 5,
+  "vision_pass": true,
+  "vision_main_subject_correct": true,
+  "vision_relationship_clear": true,
+  "vision_focus_clear": true,
+  "vision_object_count_correct": true,
+  "vision_has_unwanted_text": false,
+  "vision_has_visual_errors": false,
+  "image_model": "cf/@cf/black-forest-labs/flux-2-klein-4b",
+  "image_attempt": 1
+}

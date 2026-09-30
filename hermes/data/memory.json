@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "projects": {
+    "project-1790757562216": {
+      "id": "project-1790757562216",
+      "theme": "kenapa gurita punya tiga jantung",
+      "status": "failed",
+      "created_at": "2026-09-30T08:39:22.217Z",
+      "updated_at": "2026-09-30T08:40:26.266Z",
+      "pipeline": {
+        "story": "done",
+        "tts": "done",
+        "images": "failed",
+        "render": "failed"
+      },
+      "image_error": "node exited with code 1",
+      "render_error": "node exited with code 1"
+    }
+  },
+  "history": [
+    {
+      "type": "project_created",
+      "project_id": "project-1790757562216",
+      "theme": "kenapa gurita punya tiga jantung",
+      "timestamp": "2026-09-30T08:39:22.217Z"
+    },
+    {
+      "type": "project_finished",
+      "project_id": "project-1790757562216",
+      "status": "failed",
+      "timestamp": "2026-09-30T08:40:26.266Z"
+    }
+  ]
+}

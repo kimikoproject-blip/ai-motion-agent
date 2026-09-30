@@ -1,65 +1,158 @@
 {
-  "title": "Fakta Aneh Gurita si Makhluk Mirip Alien",
+  "title": "Kenapa Gurita Punya Tiga Jantung?",
+  "hook": "Tahukah kamu, gurita itu punya TIGA jantung sekaligus? Tapi kenapa harus sebanyak itu?",
   "scenes": [
     {
-      "duration": 5,
-      "text": "Punya 9 Otak Terpisah?",
-      "narration": "Bayangkan kalau tanganmu punya pikiran sendiri. Dua pertiga sel saraf gurita ternyata ada di delapan lengannya.",
-      "emphasis": "9 Otak Terpisah",
-      "motion": "pop",
-      "layout": "center",
-      "visualQuery": "close up octopus tentacles moving independently underwater",
-      "assetType": "video"
-    },
-    {
-      "duration": 6,
-      "text": "Lengan Bisa Mengecap Rasa",
-      "narration": "Tiap lengan ini bisa bergerak mandiri dan bahkan mengecap rasa benda hanya lewat sentuhan ratusan alat hisapnya.",
-      "emphasis": "Mengecap Rasa",
+      "scene_id": 1,
+      "narration": "Tahukah kamu, gurita itu punya TIGA jantung sekaligus? Tapi kenapa harus sebanyak itu?",
+      "visual_type": "CHARACTER_FACT",
+      "visual": "A vibrant animated cartoon octopus swimming in a clear blue ocean scene surrounded by colorful coral reef, looking curious and expressive.",
+      "subject": "An expressive cartoon octopus",
+      "environment": "Vibrant underwater coral reef with sunlight rays filtering through water",
+      "focus": "The octopus swimming in the center of the frame looking at the viewer",
+      "visual_relationship": "The octopus interacts naturally with its underwater environment",
+      "action": "The octopus swims gracefully towards the camera while waving its tentacles",
+      "emphasis": "Three soft glowing heart silhouettes inside the octopus body",
       "motion": "zoom_in",
-      "layout": "bottom",
-      "visualQuery": "macro shot octopus suction cups touching coral reef",
-      "assetType": "video"
+      "animation": "pulse",
+      "motion_target": "The torso of the swimming octopus",
+      "motion_intensity": "medium",
+      "duration_seconds": 4.57,
+      "overlay_text": "3 Jantung Gurita?",
+      "caption": "Tahukah kamu, gurita itu punya TIGA jantung sekaligus? Tapi kenapa harus sebanyak itu?",
+      "text_beats": [
+        {
+          "text": "Punya 3 Jantung?",
+          "start": 0.5,
+          "duration": 1.5,
+          "style": "question"
+        },
+        {
+          "text": "Kenapa Harus 3?",
+          "start": 2.5,
+          "duration": 2,
+          "style": "question"
+        }
+      ],
+      "audio_path": "audio/scene-01.mp3",
+      "audio_duration_seconds": 4.32
     },
     {
-      "duration": 7,
-      "text": "Jantung Berhenti Saat Berenang",
-      "narration": "Gurita punya tiga jantung dan berdarah biru. Uniknya, jantung utamanya berhenti berdetak saat berenang cepat, bikin mereka cepat lelah dan lebih suka merayap.",
-      "emphasis": "Jantung Berhenti",
-      "motion": "shake",
-      "layout": "top",
-      "visualQuery": "octopus crawling on sea floor seabed slow motion",
-      "assetType": "video"
+      "scene_id": 2,
+      "narration": "Rahasianya ada di darah mereka yang berwarna biru. Darah ini ternyata kurang efisien membawa oksigen.",
+      "visual_type": "SIMPLE_ANATOMY",
+      "visual": "A clean semi-transparent side view illustration of an octopus body showing bright glowing blue fluid flowing smoothly through simple circulatory channels.",
+      "subject": "Semi-transparent body of an octopus showing blood vessels",
+      "environment": "Deep blue oceanic gradient background with soft lighting",
+      "focus": "The glowing cyan-blue blood flowing inside the central body",
+      "visual_relationship": "Internal blue blood vessels positioned within the transparent body shell",
+      "action": "Blue blood particles stream continuously along the main circulatory path",
+      "emphasis": "Vibrant blue color of the copper-based hemocyanin blood",
+      "motion": "focus",
+      "animation": "flow",
+      "motion_target": "Glowing blue blood fluid flowing through internal channels",
+      "motion_intensity": "low",
+      "duration_seconds": 4.282,
+      "overlay_text": "Darah Berwarna Biru",
+      "caption": "Rahasianya ada di darah mereka yang berwarna biru. Darah ini ternyata kurang efisien membawa oksigen.",
+      "text_beats": [
+        {
+          "text": "Darah Warna Biru",
+          "start": 0.5,
+          "duration": 1.8,
+          "style": "emphasis"
+        },
+        {
+          "text": "Kurang Efisien Oksigen",
+          "start": 3,
+          "duration": 1.282,
+          "style": "normal"
+        }
+      ],
+      "audio_path": "audio/scene-02.mp3",
+      "audio_duration_seconds": 4.032
     },
     {
-      "duration": 7,
-      "text": "Bisa Ubah Tekstur 3D",
-      "narration": "Bukan cuma jago ganti warna dalam sekejap, gurita juga bisa mengubah tekstur kulitnya jadi berduri atau kasar persis batu karang.",
-      "emphasis": "Tekstur 3D",
-      "motion": "slide_right",
-      "layout": "bottom",
-      "visualQuery": "octopus camouflage changing skin texture coral reef",
-      "assetType": "video"
+      "scene_id": 3,
+      "narration": "Dua jantung bertugas memompa darah ke insang. Sedangkan satu jantung utama memompa darah kaya oksigen ke seluruh tubuh.",
+      "visual_type": "PROCESS",
+      "visual": "A stylized educational illustration of octopus anatomy showing two smaller side hearts connected to the gills and one main central heart connected to the body.",
+      "subject": "Three distinct glowing organs representing the three hearts",
+      "environment": "Minimalist ocean background designed for clear educational visualization",
+      "focus": "The distinct rhythm between the two gill hearts and the main central heart",
+      "visual_relationship": "Two smaller hearts sit directly at the gill bases while the larger main heart sits in the center torso",
+      "action": "The two gill hearts pulse first pushing blood to gills, then the central heart pulses sending blood out",
+      "emphasis": "The coordinated pumping sequence of the three heart organs",
+      "motion": "pan_left",
+      "animation": "pulse",
+      "motion_target": "The three glowing heart organs pulsing in order",
+      "motion_intensity": "high",
+      "duration_seconds": 5.386,
+      "overlay_text": "2 Jantung Insang + 1 Utama",
+      "caption": "Dua jantung bertugas memompa darah ke insang. Sedangkan satu jantung utama memompa darah kaya oksigen ke seluruh tubuh.",
+      "text_beats": [
+        {
+          "text": "2 Jantung ke Insang",
+          "start": 0.5,
+          "duration": 2,
+          "style": "number"
+        },
+        {
+          "text": "1 Jantung Utama",
+          "start": 3.5,
+          "duration": 1.886,
+          "style": "number"
+        },
+        {
+          "text": "Ke Seluruh Tubuh",
+          "start": 5.136,
+          "duration": 0.25,
+          "style": "normal"
+        }
+      ],
+      "audio_path": "audio/scene-03.mp3",
+      "audio_duration_seconds": 5.136
     },
     {
-      "duration": 7,
-      "text": "Ganti Warna Saat Mimpi",
-      "narration": "Bahkan saat tidur lelap, kulit mereka bisa berubah warna-warni secara liar. Peneliti menduga, mereka sedang mengalami mimpi.",
-      "emphasis": "Saat Mimpi",
-      "motion": "fade",
-      "layout": "top",
-      "visualQuery": "sleeping octopus changing colors in aquarium tank",
-      "assetType": "video"
-    },
-    {
-      "duration": 6,
-      "text": "Alien Nyata di Bumi",
-      "narration": "Dengan anatomi dan cara kerja tubuh seaneh ini, gurita adalah bukti kalau alien mungkin memang sudah ada di bumi.",
-      "emphasis": "Alien Nyata",
-      "motion": "bounce",
-      "layout": "center",
-      "visualQuery": "close up eye of an octopus underwater cinematic",
-      "assetType": "video"
+      "scene_id": 4,
+      "narration": "Uniknya lagi, saat berenang, jantung utamanya justru berhenti berdetak! Makanya gurita lebih suka merayap di dasar laut.",
+      "visual_type": "CHARACTER_FACT",
+      "visual": "A cartoon octopus tiring out while swimming fast, then comfortably switching to crawling smoothly along sandy seafloor using its tentacles.",
+      "subject": "An octopus moving on the seabed",
+      "environment": "Warm sandy ocean floor with gentle sea plants and pebbles",
+      "focus": "The octopus settling down and crawling comfortably along the ocean bed",
+      "visual_relationship": "Octopus touching tentacles directly onto the sandy floor surface",
+      "action": "The octopus transitions from fast swimming to slow relaxed crawling on the sand",
+      "emphasis": "The comfortable movement of crawling instead of exhausting swimming",
+      "motion": "zoom_out",
+      "animation": "highlight",
+      "motion_target": "The octopus crawling happily across the sandy ocean floor",
+      "motion_intensity": "medium",
+      "duration_seconds": 9.418,
+      "overlay_text": "Berhenti Saat Berenang!",
+      "caption": "Uniknya lagi, saat berenang, jantung utamanya justru berhenti berdetak! Makanya gurita lebih suka merayap di dasar laut.",
+      "text_beats": [
+        {
+          "text": "Jantung Berhenti!",
+          "start": 0.5,
+          "duration": 2,
+          "style": "emphasis"
+        },
+        {
+          "text": "Saat Berenang",
+          "start": 2.8,
+          "duration": 1.5,
+          "style": "normal"
+        },
+        {
+          "text": "Suka Merayap Laut",
+          "start": 5,
+          "duration": 2.2,
+          "style": "emphasis"
+        }
+      ],
+      "audio_path": "audio/scene-04.mp3",
+      "audio_duration_seconds": 9.168
     }
   ]
 }

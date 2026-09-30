@@ -21,6 +21,7 @@
   "dependencies": {
     "@remotion/cli": "^4.0.529",
     "dotenv": "^18.0.4",
+    "grammy": "^1.46.0",
     "remotion": "^4.0.529"
   }
 }

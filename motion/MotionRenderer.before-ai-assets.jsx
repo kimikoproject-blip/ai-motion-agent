@@ -1,0 +1,1257 @@
+import React from "react";
+import {
+  AbsoluteFill,
+  interpolate,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
+
+import MotionText from "./components/MotionText";
+import MotionEmoji from "./components/MotionEmoji";
+import MotionNumber from "./components/MotionNumber";
+import MotionShape from "./components/MotionShape";
+import MotionArrow from "./components/MotionArrow";
+import MotionProgress from "./components/MotionProgress";
+import MotionRing from "./components/MotionRing";
+
+import AnimatedOctopus from "./components/AnimatedOctopus";
+
+const COLORS = {
+  white: "#F8FAFC",
+  muted: "#94A3B8",
+  cyan: "#38BDF8",
+  blue: "#60A5FA",
+  red: "#F87171",
+  green: "#4ADE80",
+  yellow: "#FACC15",
+  purple: "#A78BFA",
+  pink: "#F06BC1",
+};
+
+function clamp01(value) {
+  return Math.max(
+    0,
+    Math.min(1, value)
+  );
+}
+
+function easeOut(value) {
+  const t = clamp01(value);
+
+  return (
+    1 -
+    Math.pow(
+      1 - t,
+      3
+    )
+  );
+}
+
+function revealProgress(
+  frame,
+  startSeconds = 0,
+  durationSeconds = 0.7,
+  fps = 30
+) {
+  const startFrame =
+    Number(startSeconds || 0) *
+    fps;
+
+  const durationFrames =
+    Math.max(
+      1,
+      Number(
+        durationSeconds || 0.7
+      ) * fps
+    );
+
+  return easeOut(
+    (frame - startFrame) /
+      durationFrames
+  );
+}
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+function SceneCamera({
+  camera,
+  children,
+}) {
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  if (
+    !camera ||
+    !camera.animation ||
+    camera.animation ===
+      "none"
+  ) {
+    return children;
+  }
+
+  const from =
+    Number(
+      camera.from ?? 1
+    );
+
+  const to =
+    Number(
+      camera.to ?? from
+    );
+
+  const duration =
+    Number(
+      camera.duration ?? 5
+    );
+
+  const progress =
+    clamp01(
+      frame /
+        Math.max(
+          1,
+          duration * fps
+        )
+    );
+
+  const scale =
+    interpolate(
+      progress,
+      [0, 1],
+      [from, to]
+    );
+
+  const x =
+    Number(
+      camera.x ?? 50
+    );
+
+  const y =
+    Number(
+      camera.y ?? 50
+    );
+
+  return (
+    <AbsoluteFill
+      style={{
+        transform:
+          `scale(${scale})`,
+        transformOrigin:
+          `${x}% ${y}%`,
+      }}
+    >
+      {children}
+    </AbsoluteFill>
+  );
+}
+
+/* =========================================================
+   SUBJECT
+========================================================= */
+
+function VisualSubject({
+  visual,
+}) {
+  const subject =
+    String(
+      visual.subject ||
+        visual.value ||
+        ""
+    ).toLowerCase();
+
+  /*
+   * Gurita tidak lagi menggunakan emoji.
+   * Semua visual subject bisa ditambah
+   * resolver asset di sini nanti.
+   */
+  if (
+    subject.includes(
+      "gurita"
+    ) ||
+    subject.includes(
+      "octopus"
+    ) ||
+    visual.value ===
+      "🐙"
+  ) {
+    return (
+      <AnimatedOctopus
+        x={
+          Number(
+            visual.x ?? 50
+          )
+        }
+        y={
+          Number(
+            visual.y ?? 48
+          )
+        }
+        scale={
+          Number(
+            visual.scale ??
+              1
+          )
+        }
+      />
+    );
+  }
+
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  const progress =
+    revealProgress(
+      frame,
+      visual.start,
+      0.8,
+      fps
+    );
+
+  const scale =
+    interpolate(
+      progress,
+      [0, 1],
+      [0.72, 1]
+    );
+
+  const float =
+    Math.sin(
+      frame / 18
+    ) * 5;
+
+  const size =
+    Number(
+      visual.size ?? 260
+    );
+
+  return (
+    <div
+      style={{
+        position:
+          "absolute",
+        left: `${visual.x ?? 50}%`,
+        top: `${visual.y ?? 50}%`,
+        transform:
+          `translate(-50%, -50%) translateY(${float}px) scale(${scale})`,
+        opacity: progress,
+        fontSize: size,
+        lineHeight: 1,
+        filter:
+          "drop-shadow(0 0 28px rgba(56,189,248,0.35))",
+        zIndex: 20,
+      }}
+    >
+      {visual.value ||
+        "●"}
+    </div>
+  );
+}
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+function VisualText({
+  visual,
+}) {
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  const progress =
+    revealProgress(
+      frame,
+      visual.start,
+      0.55,
+      fps
+    );
+
+  const translateY =
+    interpolate(
+      progress,
+      [0, 1],
+      [18, 0]
+    );
+
+  const scale =
+    visual.animation ===
+    "impact"
+      ? interpolate(
+          progress,
+          [0, 0.65, 1],
+          [0.75, 1.08, 1]
+        )
+      : 1;
+
+  return (
+    <div
+      style={{
+        position:
+          "absolute",
+        left: `${visual.x ?? 50}%`,
+        top: `${visual.y ?? 50}%`,
+        transform:
+          `translate(-50%, -50%) translateY(${translateY}px) scale(${scale})`,
+        opacity: progress,
+        color:
+          visual.color ||
+          COLORS.white,
+        fontSize:
+          Number(
+            visual.size ?? 54
+          ),
+        fontWeight:
+          visual.weight ||
+          800,
+        textAlign:
+          visual.align ||
+          "center",
+        maxWidth:
+          visual.maxWidth ||
+          "850px",
+        letterSpacing:
+          visual.letterSpacing ||
+          "-0.03em",
+        textShadow:
+          "0 8px 30px rgba(0,0,0,0.35)",
+        zIndex: 30,
+      }}
+    >
+      {visual.value}
+    </div>
+  );
+}
+
+/* =========================================================
+   COUNTER
+========================================================= */
+
+function VisualCounter({
+  visual,
+}) {
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  const target =
+    Number(
+      visual.value ?? 0
+    );
+
+  const progress =
+    revealProgress(
+      frame,
+      visual.start,
+      1,
+      fps
+    );
+
+  const value =
+    Math.round(
+      target * progress
+    );
+
+  return (
+    <div
+      style={{
+        position:
+          "absolute",
+        left: `${visual.x ?? 50}%`,
+        top: `${visual.y ?? 50}%`,
+        transform:
+          `translate(-50%, -50%) scale(${0.82 + progress * 0.18})`,
+        opacity: progress,
+        textAlign:
+          "center",
+        zIndex: 25,
+      }}
+    >
+      <div
+        style={{
+          fontSize:
+            Number(
+              visual.size ??
+                170
+            ),
+          lineHeight:
+            0.9,
+          fontWeight: 900,
+          color:
+            visual.color ||
+            COLORS.cyan,
+          letterSpacing:
+            "-0.06em",
+          textShadow:
+            "0 0 35px rgba(56,189,248,0.35)",
+        }}
+      >
+        {value}
+      </div>
+
+      {visual.label && (
+        <div
+          style={{
+            marginTop: 20,
+            fontSize: 30,
+            fontWeight: 700,
+            color:
+              COLORS.muted,
+            letterSpacing:
+              "0.12em",
+          }}
+        >
+          {visual.label}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =========================================================
+   DIAGRAM
+========================================================= */
+
+function DiagramNode({
+  node,
+  progress,
+}) {
+  const size =
+    Number(
+      node.size ?? 90
+    );
+
+  const isPrimary =
+    node.role ===
+    "primary";
+
+  return (
+    <div
+      style={{
+        position:
+          "absolute",
+        left: `${node.x ?? 50}%`,
+        top: `${node.y ?? 50}%`,
+        transform:
+          `translate(-50%, -50%) scale(${0.65 + progress * 0.35})`,
+        opacity: progress,
+        width: size,
+        height: size,
+        borderRadius:
+          "50%",
+        display: "flex",
+        alignItems:
+          "center",
+        justifyContent:
+          "center",
+        background:
+          isPrimary
+            ? "rgba(56,189,248,0.18)"
+            : "rgba(148,163,184,0.10)",
+        border:
+          `2px solid ${
+            isPrimary
+              ? COLORS.cyan
+              : "rgba(148,163,184,0.45)"
+          }`,
+        boxShadow:
+          isPrimary
+            ? "0 0 30px rgba(56,189,248,0.3)"
+            : "none",
+        color:
+          COLORS.white,
+        zIndex: 10,
+      }}
+    >
+      <div
+        style={{
+          textAlign:
+            "center",
+          fontSize:
+            Number(
+              node.fontSize ??
+                24
+            ),
+          fontWeight: 800,
+          lineHeight: 1.05,
+          padding: 8,
+        }}
+      >
+        {node.value && (
+          <div
+            style={{
+              fontSize:
+                Number(
+                  node.iconSize ??
+                    42
+                ),
+            }}
+          >
+            {node.value}
+          </div>
+        )}
+
+        {node.label && (
+          <div>
+            {node.label}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function DiagramConnector({
+  from,
+  to,
+  progress,
+}) {
+  const x1 =
+    Number(
+      from?.x ?? 50
+    );
+
+  const y1 =
+    Number(
+      from?.y ?? 50
+    );
+
+  const x2 =
+    Number(
+      to?.x ?? 50
+    );
+
+  const y2 =
+    Number(
+      to?.y ?? 50
+    );
+
+  const dx =
+    x2 - x1;
+
+  const dy =
+    y2 - y1;
+
+  const distance =
+    Math.sqrt(
+      dx * dx +
+        dy * dy
+    );
+
+  const angle =
+    Math.atan2(
+      dy,
+      dx
+    ) *
+    (180 / Math.PI);
+
+  const width =
+    Math.max(
+      0,
+      distance * progress
+    );
+
+  return (
+    <div
+      style={{
+        position:
+          "absolute",
+        left: `${x1}%`,
+        top: `${y1}%`,
+        width: `${width}%`,
+        height: 4,
+        transformOrigin:
+          "left center",
+        transform:
+          `rotate(${angle}deg)`,
+        background:
+          `linear-gradient(90deg, ${COLORS.cyan}, rgba(56,189,248,0.18))`,
+        borderRadius: 999,
+        boxShadow:
+          "0 0 14px rgba(56,189,248,0.35)",
+        zIndex: 5,
+      }}
+    />
+  );
+}
+
+function VisualDiagram({
+  visual,
+}) {
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  const reveal =
+    revealProgress(
+      frame,
+      visual.start,
+      0.9,
+      fps
+    );
+
+  const nodes =
+    Array.isArray(
+      visual.nodes
+    )
+      ? visual.nodes
+      : [];
+
+  const connections =
+    Array.isArray(
+      visual.connections
+    )
+      ? visual.connections
+      : [];
+
+  const findNode =
+    (id) =>
+      nodes.find(
+        (node) =>
+          node.id === id
+      );
+
+  return (
+    <AbsoluteFill>
+      {connections.map(
+        (
+          connection,
+          index
+        ) => {
+          const from =
+            findNode(
+              connection.from
+            );
+
+          const to =
+            findNode(
+              connection.to
+            );
+
+          if (
+            !from ||
+            !to
+          ) {
+            return null;
+          }
+
+          return (
+            <DiagramConnector
+              key={`connection-${index}`}
+              from={from}
+              to={to}
+              progress={
+                reveal
+              }
+            />
+          );
+        }
+      )}
+
+      {nodes.map(
+        (
+          node,
+          index
+        ) => {
+          const nodeProgress =
+            revealProgress(
+              frame,
+              Number(
+                visual.start ||
+                  0
+              ) +
+                index *
+                  0.12,
+              0.55,
+              fps
+            );
+
+          return (
+            <DiagramNode
+              key={
+                node.id ||
+                `node-${index}`
+              }
+              node={node}
+              progress={
+                nodeProgress
+              }
+            />
+          );
+        }
+      )}
+    </AbsoluteFill>
+  );
+}
+
+/* =========================================================
+   COMPARE
+========================================================= */
+
+function CompareCard({
+  side,
+  x,
+  color,
+  progress,
+}) {
+  return (
+    <div
+      style={{
+        position:
+          "absolute",
+        left: `${x}%`,
+        top: "50%",
+        transform:
+          `translate(-50%, -50%) translateY(${(1 - progress) * 40}px)`,
+        opacity: progress,
+        width: "39%",
+        minHeight: 330,
+        borderRadius: 34,
+        background:
+          "rgba(15,23,42,0.86)",
+        border:
+          `2px solid ${color}`,
+        boxShadow:
+          `0 0 40px ${color}30`,
+        display: "flex",
+        flexDirection:
+          "column",
+        alignItems:
+          "center",
+        justifyContent:
+          "center",
+        padding: 30,
+        zIndex: 20,
+      }}
+    >
+      <div
+        style={{
+          color:
+            COLORS.muted,
+          fontSize: 30,
+          fontWeight: 800,
+          letterSpacing:
+            "0.1em",
+        }}
+      >
+        {side.title}
+      </div>
+
+      <div
+        style={{
+          marginTop: 22,
+          color,
+          fontSize: 48,
+          fontWeight: 900,
+          textAlign:
+            "center",
+          lineHeight: 1.05,
+        }}
+      >
+        {side.value}
+      </div>
+    </div>
+  );
+}
+
+function VisualCompare({
+  visual,
+}) {
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  const progress =
+    revealProgress(
+      frame,
+      visual.start,
+      0.8,
+      fps
+    );
+
+  return (
+    <AbsoluteFill>
+      <CompareCard
+        side={
+          visual.left ||
+          {}
+        }
+        x={27}
+        color={
+          COLORS.red
+        }
+        progress={
+          progress
+        }
+      />
+
+      <CompareCard
+        side={
+          visual.right ||
+          {}
+        }
+        x={73}
+        color={
+          COLORS.blue
+        }
+        progress={
+          progress
+        }
+      />
+
+      <div
+        style={{
+          position:
+            "absolute",
+          left: "50%",
+          top: "50%",
+          transform:
+            "translate(-50%, -50%)",
+          width: 4,
+          height: 400,
+          background:
+            "rgba(148,163,184,0.25)",
+          opacity: progress,
+        }}
+      />
+    </AbsoluteFill>
+  );
+}
+
+/* =========================================================
+   SPOTLIGHT
+========================================================= */
+
+function VisualSpotlight({
+  visual,
+}) {
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  const progress =
+    revealProgress(
+      frame,
+      visual.start,
+      0.7,
+      fps
+    );
+
+  const pulse =
+    1 +
+    Math.sin(
+      frame / 7
+    ) *
+      0.04;
+
+  return (
+    <div
+      style={{
+        position:
+          "absolute",
+        left: `${visual.x ?? 50}%`,
+        top: `${visual.y ?? 50}%`,
+        transform:
+          `translate(-50%, -50%) scale(${pulse})`,
+        opacity: progress,
+        width:
+          Number(
+            visual.size ??
+              220
+          ),
+        height:
+          Number(
+            visual.size ??
+              220
+          ),
+        borderRadius:
+          "50%",
+        border:
+          `4px solid ${COLORS.yellow}`,
+        boxShadow:
+          `0 0 0 12px rgba(250,204,21,0.10), 0 0 55px rgba(250,204,21,0.45)`,
+        zIndex: 40,
+        pointerEvents:
+          "none",
+      }}
+    >
+      {visual.label && (
+        <div
+          style={{
+            position:
+              "absolute",
+            top:
+              "calc(100% + 22px)",
+            left: "50%",
+            transform:
+              "translateX(-50%)",
+            whiteSpace:
+              "nowrap",
+            fontSize: 30,
+            fontWeight: 900,
+            color:
+              COLORS.yellow,
+          }}
+        >
+          {visual.label}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =========================================================
+   TRANSFORM
+========================================================= */
+
+function VisualTransform({
+  visual,
+}) {
+  const frame =
+    useCurrentFrame();
+
+  const { fps } =
+    useVideoConfig();
+
+  const p =
+    revealProgress(
+      frame,
+      visual.start,
+      1.4,
+      fps
+    );
+
+  const before =
+    visual.before ||
+    {};
+
+  const after =
+    visual.after ||
+    {};
+
+  const beforeOpacity =
+    1 -
+    clamp01(
+      (p - 0.35) /
+        0.35
+    );
+
+  const afterOpacity =
+    clamp01(
+      (p - 0.5) /
+        0.35
+    );
+
+  return (
+    <AbsoluteFill>
+      <div
+        style={{
+          position:
+            "absolute",
+          left: "50%",
+          top: "44%",
+          transform:
+            `translate(-50%, -50%) scale(${1 + p * 0.12})`,
+          opacity:
+            beforeOpacity,
+          textAlign:
+            "center",
+          zIndex: 20,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 240,
+            lineHeight: 1,
+          }}
+        >
+          {before.value ||
+            "●"}
+        </div>
+
+        {before.label && (
+          <div
+            style={{
+              marginTop: 18,
+              fontSize: 34,
+              fontWeight: 800,
+              color:
+                COLORS.muted,
+            }}
+          >
+            {before.label}
+          </div>
+        )}
+      </div>
+
+      <div
+        style={{
+          position:
+            "absolute",
+          left: "50%",
+          top: "44%",
+          transform:
+            `translate(-50%, -50%) scale(${0.7 + afterOpacity * 0.3})`,
+          opacity:
+            afterOpacity,
+          textAlign:
+            "center",
+          zIndex: 25,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 240,
+            lineHeight: 1,
+            filter:
+              "drop-shadow(0 0 30px rgba(56,189,248,0.4))",
+          }}
+        >
+          {after.value ||
+            "●"}
+        </div>
+
+        {after.label && (
+          <div
+            style={{
+              marginTop: 18,
+              fontSize: 34,
+              fontWeight: 800,
+              color:
+                COLORS.cyan,
+            }}
+          >
+            {after.label}
+          </div>
+        )}
+      </div>
+    </AbsoluteFill>
+  );
+}
+
+/* =========================================================
+   LEGACY
+========================================================= */
+
+function renderLegacyElement(
+  element,
+  index
+) {
+  const key =
+    element.id ||
+    `${element.type}-${index}`;
+
+  switch (
+    element.type
+  ) {
+    case "text":
+      return (
+        <MotionText
+          key={key}
+          element={element}
+        />
+      );
+
+    case "emoji":
+      return (
+        <MotionEmoji
+          key={key}
+          element={element}
+        />
+      );
+
+    case "number":
+      return (
+        <MotionNumber
+          key={key}
+          element={element}
+        />
+      );
+
+    case "shape":
+      return (
+        <MotionShape
+          key={key}
+          element={element}
+        />
+      );
+
+    case "arrow":
+      return (
+        <MotionArrow
+          key={key}
+          element={element}
+        />
+      );
+
+    case "progress":
+      return (
+        <MotionProgress
+          key={key}
+          element={element}
+        />
+      );
+
+    case "ring":
+      return (
+        <MotionRing
+          key={key}
+          element={element}
+        />
+      );
+
+    default:
+      return null;
+  }
+}
+
+/* =========================================================
+   V2 VISUAL RESOLVER
+========================================================= */
+
+function renderVisual(
+  visual,
+  index
+) {
+  const key =
+    visual.id ||
+    `${visual.type}-${index}`;
+
+  switch (
+    visual.type
+  ) {
+    case "subject":
+      return (
+        <VisualSubject
+          key={key}
+          visual={visual}
+        />
+      );
+
+    case "text":
+      return (
+        <VisualText
+          key={key}
+          visual={visual}
+        />
+      );
+
+    case "counter":
+    case "number":
+      return (
+        <VisualCounter
+          key={key}
+          visual={visual}
+        />
+      );
+
+    case "diagram":
+      return (
+        <VisualDiagram
+          key={key}
+          visual={visual}
+        />
+      );
+
+    case "compare":
+      return (
+        <VisualCompare
+          key={key}
+          visual={visual}
+        />
+      );
+
+    case "spotlight":
+      return (
+        <VisualSpotlight
+          key={key}
+          visual={visual}
+        />
+      );
+
+    case "transform":
+      return (
+        <VisualTransform
+          key={key}
+          visual={visual}
+        />
+      );
+
+    default:
+      return null;
+  }
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+export default function MotionRenderer({
+  plan = {},
+}) {
+  const visuals =
+    Array.isArray(
+      plan.visuals
+    )
+      ? plan.visuals
+      : [];
+
+  const legacyElements =
+    Array.isArray(
+      plan.elements
+    )
+      ? plan.elements
+      : [];
+
+  const hasV2 =
+    visuals.length > 0;
+
+  return (
+    <AbsoluteFill
+      style={{
+        background:
+          plan.background ||
+          "#070B14",
+        overflow:
+          "hidden",
+      }}
+    >
+      <AbsoluteFill
+        style={{
+          background:
+            "radial-gradient(circle at 50% 40%, rgba(30,64,175,0.16), transparent 45%)",
+        }}
+      />
+
+      <SceneCamera
+        camera={
+          plan.camera
+        }
+      >
+        {hasV2
+          ? visuals.map(
+              renderVisual
+            )
+          : legacyElements.map(
+              renderLegacyElement
+            )}
+      </SceneCamera>
+    </AbsoluteFill>
+  );
+}
